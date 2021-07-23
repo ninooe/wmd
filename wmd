@@ -1,0 +1,22 @@
+#!/usr/bin/python3.8
+import sys
+import os
+# prefix that adds the option to convert windows path to linux mount:
+# -WD "[PATH]"
+# wmd [COMMAND] [WHATEVER]... -WD "[WINDOWSPATH]" ...[WHATELSE]...
+# example:
+# wmd cp -r -WD "C:\Users\user\Desktop\*" .    ==>    cp -r /mnt/c/Users/user/Desktop/* .
+
+comandstring = "" 
+flag = False
+for arg in sys.argv[1:]:
+    if flag == True:
+        arg = arg.replace("\\", "/")
+        arg = "/mnt/" + arg[0].lower() + arg[2:] 
+        flag = False
+    if arg == "-WD": 
+        flag = True
+    else:
+        comandstring += " "
+        comandstring += arg
+os.system(comandstring)
